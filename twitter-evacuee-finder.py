@@ -1,7 +1,6 @@
 import requests
 import json
 import keyring
-import logging
 
 # Retrieving twitter follows based on https://github.com/twitterdev/Twitter-API-v2-sample-code/blob/main/Follows-Lookup/following_lookup.py
 
@@ -14,9 +13,12 @@ def main():
     twitter_user_id = 92179256  # Stevoisiak
     twitter_url = f"https://api.twitter.com/2/users/{twitter_user_id}/following"
     twitter_headers = {"Authorization": f"Bearer {twitter_bearer_token}"}
+    users = []
 
     # Get follows list from Twitter
     # TODO: Get more than the first 100 follows
+
+    input(f"Press Enter to get Twitter follow list for {twitter_user_id}...")
     r = requests.get(twitter_url, headers=twitter_headers)
     if r.status_code != 200:
         raise Exception(
@@ -25,10 +27,11 @@ def main():
             )
         )
     json_response = r.json()
+    print(f"Retrieved {json_response['meta']['result_count']} follows")
     print(json.dumps(json_response, indent=4, sort_keys=True))
 
-    users = []
     # Iterate through twitter users
+    input(f"Press Enter to check for cohost accounts...")
     for u in json_response["data"]:
         username = u['username']
 
