@@ -12,14 +12,15 @@ def main():
 
     twitter_user_id = 92179256  # Stevoisiak
     twitter_url = f"https://api.twitter.com/2/users/{twitter_user_id}/following"
+    twitter_params = {"max_results": 1000}
     twitter_headers = {"Authorization": f"Bearer {twitter_bearer_token}"}
     users = []
 
     # Get follows list from Twitter
-    # TODO: Get more than the first 100 follows
-
+    # TODO: Limited to 1000 followers. Requires pagation support.
+    #       https://developer.twitter.com/en/docs/twitter-api/pagination
     input(f"Press Enter to get Twitter follow list for {twitter_user_id}...")
-    r = requests.get(twitter_url, headers=twitter_headers)
+    r = requests.get(twitter_url, params=twitter_params, headers=twitter_headers)
     if r.status_code != 200:
         raise Exception(
             "Request returned an error: {} {}".format(
