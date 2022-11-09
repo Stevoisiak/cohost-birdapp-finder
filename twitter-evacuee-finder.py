@@ -29,7 +29,7 @@ def main():
         )
     json_response = r.json()
     print(f"Retrieved {json_response['meta']['result_count']} follows")
-    print(json.dumps(json_response, indent=4, sort_keys=True))
+    # print(json.dumps(json_response, indent=4, sort_keys=True))
 
     # Iterate through twitter users
     input(f"Press Enter to check for cohost accounts...")
@@ -37,12 +37,11 @@ def main():
         username = u['username']
 
         # Check if cohost account exists
-        print(f"Checking cohost for user {username}.")
+        # print(f"Checking cohost for user {username}.")
         request_url = f'https://cohost.org/{username}'
         r = requests.head(request_url, timeout=10)
         if r.status_code == 200:
             # TODO: Get more inforation about user
-            print("Cohost account found")
             user = {
                 'twitter_id': u['id'],
                 'twitter_display_name': u['name'],
@@ -51,7 +50,8 @@ def main():
             }
             users.append(user)
         elif r.status_code == 404:
-            print("Cohost account does not exist (404)")
+            pass
+            # print("Cohost account does not exist (404)")
         else:
             raise Exception(
                 "Cohost request returned an error: {} {}".format(
