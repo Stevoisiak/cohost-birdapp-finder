@@ -20,7 +20,7 @@ def main():
     # TODO: Limited to 1000 followers. Requires pagation support.
     #       https://developer.twitter.com/en/docs/twitter-api/pagination
     input(f"Press Enter to get Twitter follow list for {twitter_user_id}...")
-    r = requests.get(twitter_url, params=twitter_params, headers=twitter_headers)
+    r = requests.get(twitter_url, params=twitter_params, headers=twitter_headers, timeout=10)
     if r.status_code != 200:
         raise Exception(
             "Request returned an error: {} {}".format(
@@ -39,7 +39,7 @@ def main():
         # Check if cohost account exists
         print(f"Checking cohost for user {username}.")
         request_url = f'https://cohost.org/{username}'
-        r = requests.get(request_url)
+        r = requests.head(request_url, timeout=10)
         if r.status_code == 200:
             # TODO: Get more inforation about user
             print("Cohost account found")
