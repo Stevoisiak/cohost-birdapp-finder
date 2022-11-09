@@ -14,7 +14,6 @@ def main():
     twitter_url = f"https://api.twitter.com/2/users/{twitter_user_id}/following"
     twitter_params = {"max_results": 1000}
     twitter_headers = {"Authorization": f"Bearer {twitter_bearer_token}"}
-    users = []
 
     # Get follows list from Twitter
     # TODO: Limited to 1000 followers. Requires pagation support.
@@ -41,14 +40,7 @@ def main():
         request_url = f'https://cohost.org/{username}'
         r = requests.head(request_url, timeout=10)
         if r.status_code == 200:
-            # TODO: Get more inforation about user
-            user = {
-                'twitter_id': u['id'],
-                'twitter_display_name': u['name'],
-                'twitter_username': u['username'],
-                'cohost_username': u['username']
-            }
-            users.append(user)
+            print(u["name"] + " --> " + request_url)
         elif r.status_code == 404:
             pass
             # print("Cohost account does not exist (404)")
