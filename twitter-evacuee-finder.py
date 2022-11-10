@@ -75,7 +75,7 @@ def main():
         csv_writer.writerow(['Twitter ID', 'Twitter Display Name', 'Username', 'Cohost URL'])
         for u in users:
             csv_writer.writerow([u['twitter_id'], u['twitter_display_name'], u['twitter_username'], u['cohost_url']])
-    print("Finished saving to output.csv")
+    print("Saved to output.csv")
 
 if __name__ == "__main__":
     main()
