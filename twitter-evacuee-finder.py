@@ -5,17 +5,31 @@ import requests
 # Retrieving twitter follows based on https://github.com/twitterdev/Twitter-API-v2-sample-code/blob/main/Follows-Lookup/following_lookup.py
 
 def main():
-
     bearer_token = input("Enter twitter bearer token. (Obtained from https://developer.twitter.com/en)\nBearer Token: ")
-    user_id = input("Enter your twitter account's user ID. (Obtained from https://tweeterid.com/)\nUser ID: ")
-    url = f"https://api.twitter.com/2/users/{user_id}/following"
-    params = {"max_results": 1000}
+    username = input("Enter your twitter account's username.\nUsername: ")
     headers = {"Authorization": f"Bearer {bearer_token}"}
+
+    # Convert username to ID
+    url = "https://api.twitter.com/2/users/by"
+    params = {"usernames": username}
+    r = requests.get(url, params=params, headers=headers, timeout=10)
+    if r.status_code != 200:
+        raise Exception(
+            "Request returned an error: {} {}".format(
+                r.status_code, r.text
+            )
+        )
+    json_response = r.json()
+    user_id = json_response['data'][0]['id']
+    user_display_name = json_response['data'][0]['name']
 
     # Get follows list from Twitter
     # TODO: Limited to 1000 followers. Requires pagation support.
     #       https://developer.twitter.com/en/docs/twitter-api/pagination
-    input("Press Enter to get Twitter follow list...")
+    input(f"Press Enter to get Twitter follow list for {user_display_name}...")
+
+    url = f"https://api.twitter.com/2/users/{user_id}/following"
+    params = {"max_results": 1000}
     r = requests.get(url, params=params, headers=headers, timeout=10)
     if r.status_code != 200:
         raise Exception(
@@ -25,7 +39,6 @@ def main():
         )
     json_response = r.json()
     print(f"Retrieved {json_response['meta']['result_count']} follows")
-    # print(json.dumps(json_response, indent=4, sort_keys=True))
 
     # Check each twitter username for a cohost account
     users = []
